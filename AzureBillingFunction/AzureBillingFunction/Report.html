@@ -1,0 +1,48 @@
+﻿<html>
+<head>
+    <title>Weekly Billing Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" integrity="sha384-VEpVDzPR2x8NbTDZ8NFW4AWbtT2g/ollEzX/daZdW/YvUBlbgVtsxMftnJ84k0Cn" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" integrity="sha384-Z9D45cp3elqajO+xEyjRTIK1Gr3eYsXiyCPIKNog1sIQzpo2fqFDqFdADGiJjzOv" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" integrity="sha384-7PXRkl4YJnEpP8uU4ev9652TTZSxrqC8uOpcV1ftVEC7LVyLZqqDUAaq+Y+lGgr9" crossorigin="anonymous"></script>
+    <!-- https://www.srihash.org/ -->
+</head>
+<body>
+    <style>
+        body  { padding: 0px 15px; }
+        table { font-size: 1em; }
+        h1 { font-size: 2.0em; }
+        h2 { font-size: 1.5em; }
+    </style>
+    <script>
+          $(document).ready(function () {
+              $('#costsPerResourceGroup').DataTable({
+                  "pageLength": 100
+              });
+              $('#costsDetails').DataTable({
+                  "pageLength": 100
+              });
+          });
+    </script>
+
+    <h1>Weekly Azure Billing Report: {date}</h1>
+    <h2>Costs by Resource Group</h2>
+    <table id="costsPerResourceGroup" class="table table-striped table-bordered"">
+        <thead><tr><th data-sortable="true">Resource Group</th><th>Costs</th></tr></thead>
+        <tbody>
+            {costsPerResourceGroup}
+        </tbody>
+    </table>
+
+    <h2>Cost Details</h2>
+    <table id="costsDetails" class="table table-striped table-bordered">
+        <thead><tr><th>Resource Group</th><th>Resource</th><th>Meter</th><th>Usage</th><th>Costs</th></tr></thead>
+        <tbody>
+            {costsDetails}
+        </tbody>
+    </table>
+</body>
+</html>
