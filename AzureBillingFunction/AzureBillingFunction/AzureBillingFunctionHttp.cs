@@ -16,14 +16,15 @@ namespace AzureBillingFunction
     public static class AzureBillingFunctionHttp
     {
         [FunctionName("AzureBillingFunctionHttp")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log, ExecutionContext context)
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            Client c = new Client("mytenant.onmicrosoft.com", "[CLIENTID]",
-                "[CLIENTSECRET]", "[SUBSCRIPTIONID]", "http://[REDIRECTURL]");
+            var c = new Client(Config.Tenant, Config.ClientId, Config.ClientSecret,
+                Config.SubscriptionId, Config.RedirectUrl);
 
-            string html = BillingReportGenerator.GetHtmlReport(c, "Report.html");
+            var path = System.IO.Path.Combine(context.FunctionAppDirectory, "Report.html");
+            string html = BillingReportGenerator.GetHtmlReport(c, path);
 
 
             var response = new HttpResponseMessage(HttpStatusCode.OK);

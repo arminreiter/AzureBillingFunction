@@ -14,27 +14,23 @@ namespace AzureBillingFunction
     {
         internal const string CURRENCY_CHAR = "&euro;";
         const string TRIGGER = "0 0 9 * * 1";
-
-        const string FROM = "billingapi@codehollow.com";
-        const string FROM_NAME = "Azure Billing API";
-        const string TO = "[MAIL]";
-        const string TO_NAME = "[NAME]";
-        const string APIKEY = "[SENDGRIDAPIKEY]";
+        //const string TRIGGER = "*/10 * * * * *";
 
         [FunctionName("AzureBillingFunction")]
-        public static void Run([TimerTrigger(TRIGGER)]TimerInfo myTimer, TraceWriter log)
+        public static void Run([TimerTrigger(TRIGGER)]TimerInfo myTimer, TraceWriter log, ExecutionContext context)
         {
             log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
             try
             {
-                Client c = new Client("mytenant.onmicrosoft.com", "[CLIENTID]",
-                    "[CLIENTSECRET]", "[SUBSCRIPTIONID]", "http://[REDIRECTURL]");
+                var c = new Client(Config.Tenant, Config.ClientId, Config.ClientSecret,
+                    Config.SubscriptionId, Config.RedirectUrl);
+                
+                var path = System.IO.Path.Combine(context.FunctionAppDirectory, "MailReport.html");
+                string html = BillingReportGenerator.GetHtmlReport(c, path);
 
-                string html = BillingReportGenerator.GetHtmlReport(c, "MailReport.html");
-
-                SendMail(TO, TO_NAME, html);
+                SendMail(Config.To, Config.ToName, html);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
             }
@@ -42,8 +38,8 @@ namespace AzureBillingFunction
 
         private static void SendMail(string toMail, string toName, string html)
         {
-            var client = new SendGridClient(APIKEY);
-            var from = new EmailAddress(FROM, FROM_NAME);
+            var client = new SendGridClient(Config.ApiKey);
+            var from = new EmailAddress(Config.From, Config.FromName);
             var to = new EmailAddress(toMail, toName);
 
             var msg = MailHelper.CreateSingleEmail(from, to, "Weekly Azure Billing Report", "", html);
