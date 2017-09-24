@@ -1,7 +1,7 @@
 # AzureBillingFunction
 
 A description on how to use and setup this function can be found on my blog:
-https://codehollow.com/2017/09/weekly-azure-bil…-azure-functions/ 
+https://codehollow.com/2017/09/weekly-azure-billing-report-per-mail-azure-functions/
 
 I just changed one thing which is now different to the blog post. In this github projekt,
 I use settings of azure functions. So if you want to use it, you have 2 ways to configure your function:
