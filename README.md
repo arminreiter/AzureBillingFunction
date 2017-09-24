@@ -8,6 +8,7 @@ I use settings of azure functions. So if you want to use it, you have 2 ways to 
 
 1. create local.settings.json and deploy it to azure.
 This settings file must contain the following values:
+```json
 {
   "IsEncrypted": false,
   "Values": {
@@ -25,6 +26,7 @@ This settings file must contain the following values:
     "RedirectUrl": "[REDIRECT URL (AzureAD)]"
   }
 }
+```
 
 or 
 2.
